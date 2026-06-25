@@ -7,6 +7,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 from app.api.routes.auth import router as auth_router
+from app.api.routes.delivery import router as delivery_router
 from app.api.routes.health import router as health_router
 from app.api.routes.intelligence import router as intelligence_router
 from app.api.routes.jobs import router as jobs_router
@@ -41,6 +42,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(auth_router, prefix="/auth", tags=["auth"])
     app.include_router(repositories_router, prefix="/repositories", tags=["repositories"])
     app.include_router(intelligence_router)
+    app.include_router(delivery_router)
     app.include_router(jobs_router, prefix="/jobs", tags=["jobs"])
 
     return app
