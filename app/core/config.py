@@ -21,6 +21,13 @@ class Settings(BaseSettings):
     chroma_persist_dir: str = Field(default="./chroma", alias="CHROMA_PERSIST_DIR")
     openai_api_key: str | None = Field(default=None, alias="OPENAI_API_KEY")
     openai_embedding_model: str = Field(default="text-embedding-3-small", alias="OPENAI_EMBEDDING_MODEL")
+    llm_provider: str = Field(default="openai", alias="LLM_PROVIDER")
+    llm_model: str = Field(default="gpt-4.1-mini", alias="LLM_MODEL")
+    llm_max_output_tokens: int = Field(default=1200, alias="LLM_MAX_OUTPUT_TOKENS")
+    retrieval_top_k: int = Field(default=8, alias="RETRIEVAL_TOP_K")
+    search_top_k: int = Field(default=10, alias="SEARCH_TOP_K")
+    memory_window_messages: int = Field(default=8, alias="MEMORY_WINDOW_MESSAGES")
+    prompt_max_context_chars: int = Field(default=24_000, alias="PROMPT_MAX_CONTEXT_CHARS")
     max_file_size_bytes: int = Field(default=1_048_576, alias="MAX_FILE_SIZE_BYTES")
     shallow_clone_default: bool = Field(default=True, alias="SHALLOW_CLONE_DEFAULT")
     jwt_algorithm: str = "HS256"
