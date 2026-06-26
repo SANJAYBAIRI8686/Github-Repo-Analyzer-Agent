@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 from sqlalchemy.orm import Session
+from kombu.exceptions import OperationalError
 
 from app.core.config import Settings
 from app.core.errors import NotFoundError
@@ -53,11 +54,14 @@ class IngestionCoordinator:
         return repository, job
 
     def enqueue_or_run(self, job_id: int) -> None:
-        if self.settings.celery_broker_url.startswith("redis://"):
+        if self.settings.environment == "production" and self.settings.celery_broker_url.startswith("redis://"):
             from app.tasks.ingestion_tasks import ingest_repository
 
-            ingest_repository.delay(job_id)
-            return
+            try:
+                ingest_repository.delay(job_id)
+                return
+            except (OperationalError, RuntimeError):
+                pass
         self.run(job_id)
 
     def _update_job(self, job: IngestionJob, **changes: Any) -> None:
